@@ -7,12 +7,18 @@ import {
   AppBar,
   Toolbar,
   Paper,
+  Pagination,
+  ThemeProvider,
+  createTheme,
 } from "@mui/material";
 import RepoList from "./components/RepoList";
 
 function App() {
   const [username, setUsername] = useState("");
   const [showRepoList, setShowRepoList] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [perPage] = useState(5); // Define la cantidad de repositorios por página
+
 
   const handleUsernameChange = (event) => {
     setUsername(event.target.value);
@@ -21,6 +27,12 @@ function App() {
   const handleFormSubmit = (event) => {
     event.preventDefault();
     setShowRepoList(true);
+    setCurrentPage(1); // Reinicia a la primera página al realizar una nueva búsqueda
+
+  };
+
+  const handlePageChange = (event, value) => {
+    setCurrentPage(value);
   };
 
   return (
@@ -62,9 +74,17 @@ function App() {
               Buscar Repositorios
             </Button>
           </form>
-        </Paper>
-        {showRepoList && <RepoList username={username} />}
-      </Container>
+          </Paper>
+          {showRepoList && <RepoList username={username} currentPage={currentPage} perPage={perPage} />}
+          {showRepoList && (
+            <Pagination
+              count={10} // Define el total de páginas (puedes ajustarlo según tus necesidades)
+              page={currentPage}
+              onChange={handlePageChange}
+              sx={{ marginTop: "20px", display: "flex", justifyContent: "center" }}
+            />
+          )}
+        </Container>
     </div>
   );
 }
