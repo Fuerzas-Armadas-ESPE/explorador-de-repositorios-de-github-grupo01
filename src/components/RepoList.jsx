@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from "@mui/material";
 
 const RepoList = ({ username }) => {
   const [repos, setRepos] = useState([]);
@@ -25,13 +26,26 @@ const RepoList = ({ username }) => {
   return (
     <div>
       <h2>Top 5 repositorios con más participación de {username}</h2>
-      <ul>
-        {repos.map((repo) => (
-          <li key={repo.id}>
-            {repo.name} - Tamaño: {repo.size}
-          </li>
-        ))}
-      </ul>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Nombre del Repositorio</TableCell>
+              <TableCell align="right">Tamaño</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {repos.map((repo) => (
+              <TableRow key={repo.id}>
+                <TableCell component="th" scope="row">
+                  {repo.name}
+                </TableCell>
+                <TableCell align="right">{repo.size}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </div>
   );
 };
